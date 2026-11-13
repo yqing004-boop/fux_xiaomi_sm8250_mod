@@ -24,7 +24,7 @@ on:
 
 jobs:
   build-kernel:
-    name: Build elish | ${{ matrix.variant }} | ${{ github.event_name == 'push' && 'KSU' || (github.event.inputs.ksu == 'true' && 'KSU' || 'NoKSU') }}
+    name: Build umi | ${{ matrix.variant }} | ${{ github.event_name == 'push' && 'KSU' || (github.event.inputs.ksu == 'true' && 'KSU' || 'NoKSU') }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -54,10 +54,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ccache_mikernel
-          key: ${{ runner.os }}-kernel-ccache-elish-${{ matrix.variant }}-${{ github.run_id }}
+          key: ${{ runner.os }}-kernel-ccache-umi-${{ matrix.variant }}-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-kernel-ccache-elish-${{ matrix.variant }}-
-            ${{ runner.os }}-kernel-ccache-elish-
+            ${{ runner.os }}-kernel-ccache-umi-${{ matrix.variant }}-
+            ${{ runner.os }}-kernel-ccache-umi-
             ${{ runner.os }}-kernel-ccache-
 
       - name: Setup proton-clang Toolchain
@@ -81,7 +81,7 @@ jobs:
         run: |
           chmod +x build.sh
 
-          ARGS="elish"
+          ARGS="umi"
 
           if [ "${{ github.event_name }}" = "push" ] || [ "${{ github.event_name }}" = "pull_request" ]; then
             ARGS="$ARGS ksu"
@@ -97,7 +97,7 @@ jobs:
       - name: Upload Flashable ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: Kernel-elish-${{ matrix.variant }}-${{ github.event_name == 'push' && 'KSU' || (github.event.inputs.ksu == 'true' && 'KSU' || 'NoKSU') }}-${{ github.run_id }}
+          name: Kernel-umi-${{ matrix.variant }}-${{ github.event_name == 'push' && 'KSU' || (github.event.inputs.ksu == 'true' && 'KSU' || 'NoKSU') }}-${{ github.run_id }}
           path: "*.zip"
           compression-level: 0
           if-no-files-found: ignore
